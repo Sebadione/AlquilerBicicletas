@@ -42,8 +42,6 @@ public class EstacionServiceImpl implements EstacionService{
         // Distancia euclídea
         return Math.sqrt(Math.pow(LatitudMetros, 2) + Math.pow(LongitudMetros, 2));
 
-
-
     }
 
     @Override

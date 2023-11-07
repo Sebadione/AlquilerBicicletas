@@ -33,10 +33,12 @@ public class AlquilerServiceImpl implements AlquilerService {
 
     @Override
     public Optional<Alquiler> alquilarBicicleta(Long idEstacionRetiro, String idCliente) {
-
+        if (estacionService.getEstacionById(idEstacionRetiro).isEmpty()) {
+            return Optional.empty();
+        }
         Alquiler alquiler = new Alquiler(idCliente,
                 EstadoAlquiler.INICIADO.getValor(),
-                estacionService.getEstacionById(idEstacionRetiro).get(),
+                idEstacionRetiro,
                 LocalDateTime.now(), null,
                 0,
                 null);
@@ -46,9 +48,12 @@ public class AlquilerServiceImpl implements AlquilerService {
 
     @Override
     public Optional<Alquiler> devolverBicicleta(Long idEstacion, Long idAlquiler) {
+        if (estacionService.getEstacionById(idEstacion).isEmpty()) {
+            return Optional.empty();
+        }
         Tarifa tarifa = tarifaService.getTarifa();
         Alquiler alquiler = alquilerRepository.findById(idAlquiler).get();
-        alquiler.setEstacionDevolucion(estacionService.getEstacionById(idEstacion).get());
+        alquiler.setEstacionDevolucion(idEstacion);
         alquiler.setFechaHoraDevolucion(LocalDateTime.now());
         alquiler.setEstado(EstadoAlquiler.FINALIZADO.getValor());
         alquiler.setMonto(tarifaService.calcularTarifa(alquiler,tarifa));

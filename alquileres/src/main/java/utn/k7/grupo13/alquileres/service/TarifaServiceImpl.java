@@ -3,6 +3,7 @@ package utn.k7.grupo13.alquileres.service;
 
 import org.springframework.stereotype.Service;
 import utn.k7.grupo13.alquileres.domain.Alquiler;
+import utn.k7.grupo13.alquileres.domain.Estacion;
 import utn.k7.grupo13.alquileres.domain.Tarifa;
 import utn.k7.grupo13.alquileres.repository.TarifaRepository;
 
@@ -63,18 +64,32 @@ public class TarifaServiceImpl implements TarifaService{
             System.out.println(tarifa_total);
         }
 
+        //monto por distancia
+        Estacion estacion_retiro = estacionService.getEstacionById(alquiler.getEstacionRetiro()).get();
+        Estacion estacion_devolucion = estacionService.getEstacionById(alquiler.getEstacionDevolucion()).get();
 
-        tarifa_total += estacionService.calcularDistancia(
-                alquiler.getEstacionRetiro().getLatitud(),
-                alquiler.getEstacionRetiro().getLongitud(),
-                alquiler.getEstacionDevolucion().getLatitud(),
-                alquiler.getEstacionDevolucion().getLongitud())
+
+
+
+        tarifa_total += calcularDistancia(
+                estacion_retiro.getLatitud(),
+                estacion_retiro.getLongitud(),
+                estacion_devolucion.getLatitud(),
+                estacion_devolucion.getLongitud())
                 * tarifa.getMontoKm();
         System.out.println(tarifa_total);
 
-
-
         return tarifa_total;
+    }
+
+    public double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+        // Conversión de grados a metros (asumiendo que 1 grado = 110,000 metros)
+        double LatitudMetros = Math.abs(lat1 - lat2) * 110;
+        double LongitudMetros = Math.abs(lon1 - lon2) * 110;
+
+        // Distancia euclídea
+        return Math.sqrt(Math.pow(LatitudMetros, 2) + Math.pow(LongitudMetros, 2));
+
     }
 
 

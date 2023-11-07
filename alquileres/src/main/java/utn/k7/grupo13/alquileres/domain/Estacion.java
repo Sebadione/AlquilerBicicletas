@@ -8,14 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
+
 @Data
 @NoArgsConstructor
-@Table(name = "estaciones")
-@SequenceGenerator(name = "tu_secuencia_generator", sequenceName = "tu_secuencia", allocationSize = 19)
 public class Estacion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tu_secuencia_generator")
+
 
     private Long id;
     private String nombre;

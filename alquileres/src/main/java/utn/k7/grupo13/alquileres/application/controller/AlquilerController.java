@@ -1,5 +1,6 @@
 package utn.k7.grupo13.alquileres.application.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utn.k7.grupo13.alquileres.application.ResponseHandler;
@@ -8,7 +9,9 @@ import utn.k7.grupo13.alquileres.application.request.PUTAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.request.PostAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.response.AlquilerResponse;
 import utn.k7.grupo13.alquileres.domain.Alquiler;
+import utn.k7.grupo13.alquileres.domain.Estacion;
 import utn.k7.grupo13.alquileres.service.AlquilerService;
+import utn.k7.grupo13.alquileres.service.EstacionService;
 
 
 import java.util.List;
@@ -19,53 +22,57 @@ import java.util.Optional;
 public class AlquilerController {
     private AlquilerService alquilerService;
 
-    public AlquilerController(AlquilerService alquilerService) {
+    private EstacionService estacionService;
+
+    public AlquilerController(AlquilerService alquilerService, EstacionService estacionService) {
         this.alquilerService = alquilerService;
+        this.estacionService = estacionService;
     }
 
     @PostMapping
     public ResponseEntity<Object> alquilarBicicleta(@RequestBody PostAlquilerRequest request) {
-       Optional<Alquiler> alquiler = alquilerService.alquilarBicicleta(request.getIdEstacionRetiro(),
-               request.getIdCliente());
-         if(alquiler.isPresent()){
-             return ResponseHandler.created(new AlquilerResponse(
-                     alquiler.get().getId(),
-                     alquiler.get().getIdCliente(),
-                     alquiler.get().getEstado(),
-                     alquiler.get().getEstacionRetiro().getId(),
-                     null,
-                     alquiler.get().getFechaHoraRetiro(),
-                     alquiler.get().getFechaHoraDevolucion(),
-                     null,
-                     null
-             ));
+        Optional<Alquiler> alquiler = alquilerService.alquilarBicicleta(request.getIdEstacionRetiro(),
+                request.getIdCliente());
+        if (alquiler.isPresent()) {
+            return ResponseHandler.created(new AlquilerResponse(
+                    alquiler.get().getId(),
+                    alquiler.get().getIdCliente(),
+                    alquiler.get().getEstado(),
+                    alquiler.get().getEstacionRetiro(),
+                    null,
+                    alquiler.get().getFechaHoraRetiro(),
+                    alquiler.get().getFechaHoraDevolucion(),
+                    null,
+                    null
+            ));
 
-         }else {
-             return ResponseHandler.badRequest("No se pudo crear el alquiler");
-         }
+        } else {
+            return ResponseHandler.badRequest("No se pudo crear el alquiler");
+        }
     }
+
     @PutMapping()
     public ResponseEntity<Object> devolverBicicleta(@RequestBody(required = false) PUTAlquilerRequest request) {
         Optional<Alquiler> alquiler = alquilerService.devolverBicicleta(request.getIdEstacionDevolucion(), request.getIdAlquiler());
-        if(request.getMoneda() == null){
+        if (request.getMoneda() == null) {
             request.setMoneda(Moneda.ARS);
         }
-        double monto =  alquiler.get().getMonto() * request.getMoneda().getValor();
+        double monto = alquiler.get().getMonto() * request.getMoneda().getValor();
         monto = Math.round(monto * 100.0) / 100.0;
-        if(alquiler.isPresent()){
+        if (alquiler.isPresent()) {
             return ResponseHandler.success(new AlquilerResponse(
                     alquiler.get().getId(),
                     alquiler.get().getIdCliente(),
                     alquiler.get().getEstado(),
-                    alquiler.get().getEstacionRetiro().getId(),
-                    alquiler.get().getEstacionDevolucion().getId(),
+                    alquiler.get().getEstacionRetiro(),
+                    alquiler.get().getEstacionDevolucion(),
                     alquiler.get().getFechaHoraRetiro(),
                     alquiler.get().getFechaHoraDevolucion(),
-                    monto +" "+ request.getMoneda(),
+                    monto + " " + request.getMoneda(),
                     alquiler.get().getIdTarifa().getId()
             ));
 
-        }else {
+        } else {
             return ResponseHandler.badRequest("No se pudo devolver la bicicleta");
         }
     }
@@ -79,6 +86,7 @@ public class AlquilerController {
             return ResponseHandler.notFound("No se pudo obtener los alquileres");
         }
 }
+
 
 
 

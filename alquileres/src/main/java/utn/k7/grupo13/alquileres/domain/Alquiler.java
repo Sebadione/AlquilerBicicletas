@@ -18,16 +18,8 @@ public class Alquiler {
     private Long id;
     private String idCliente;
     private int estado;
-
-
-    @OneToOne
-    @JoinColumn(name = "estacion_retiro")
-    private Estacion estacionRetiro;
-
-
-    @OneToOne
-    @JoinColumn(name = "estacion_devolucion")
-    private Estacion estacionDevolucion;
+    private Long estacionRetiro;
+    private Long estacionDevolucion;
     private LocalDateTime fechaHoraRetiro;
     private LocalDateTime fechaHoraDevolucion;
     private double monto;
@@ -36,7 +28,7 @@ public class Alquiler {
     @JoinColumn(name = "id_tarifa")
     private Tarifa idTarifa;
 
-    public Alquiler(String idCliente, int estado, Estacion estacionRetiro, LocalDateTime fechaHoraRetiro, LocalDateTime fechaHoraDevolucion, double monto, Tarifa idTarifa) {
+    public Alquiler(String idCliente, int estado, Long estacionRetiro, LocalDateTime fechaHoraRetiro, LocalDateTime fechaHoraDevolucion, double monto, Tarifa idTarifa) {
         this.idCliente = idCliente;
         this.estado = estado;
         this.estacionRetiro = estacionRetiro;
