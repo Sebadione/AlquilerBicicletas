@@ -1,7 +1,5 @@
 package utn.k7.grupo13.alquileres.domain;
 
-
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

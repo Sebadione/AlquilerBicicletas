@@ -24,9 +24,9 @@ public class GWConfig {
                                         @Value("${URL_API_ALQUILERES}") String uriAlquileres,
                                         @Value("${URL_API_ESTACIONES}") String uriEstaciones) {
         return builder.routes()
-                // Ruteo al Microservicio de Personas
-                .route(p -> p.path("/api/estacion/{id}/alquiler/**").uri(uriAlquileres))
-                // Ruteo al Microservicio de Entradas
+                // Ruteo al Microservicio de Alquileres
+                .route(p -> p.path("/api/alquiler/**").uri(uriAlquileres))
+                // Ruteo al Microservicio de Estaciones
                 .route(p -> p.path("/api/estacion/**").uri(uriEstaciones))
                 .build();
 
@@ -37,14 +37,14 @@ public class GWConfig {
         http.authorizeExchange(exchanges -> exchanges
 
 
-                        .pathMatchers(HttpMethod.POST,"/api/estacion/{id}/alquiler")
+                        .pathMatchers(HttpMethod.POST,"/api/alquiler/")
                         .hasRole("CLIENTE")
 
-                        .pathMatchers(HttpMethod.PUT,"/api/estacion/{id}/alquiler")
+                        .pathMatchers(HttpMethod.PUT,"/api/alquiler/")
                         .hasRole("CLIENTE")
 
 
-                        .pathMatchers(HttpMethod.GET,"/api/estacion/{id}/alquiler")
+                        .pathMatchers(HttpMethod.GET,"/api/alquiler/")
                         .hasRole("ADMINISTRADOR")
 
                         .pathMatchers(HttpMethod.POST,"/api/estacion")

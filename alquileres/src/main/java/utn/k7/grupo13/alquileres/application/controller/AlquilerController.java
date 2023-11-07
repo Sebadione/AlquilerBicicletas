@@ -22,11 +22,10 @@ import java.util.Optional;
 public class AlquilerController {
     private AlquilerService alquilerService;
 
-    private EstacionService estacionService;
 
-    public AlquilerController(AlquilerService alquilerService, EstacionService estacionService) {
+
+    public AlquilerController(AlquilerService alquilerService) {
         this.alquilerService = alquilerService;
-        this.estacionService = estacionService;
     }
 
     @PostMapping

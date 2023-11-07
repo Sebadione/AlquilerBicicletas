@@ -3,7 +3,6 @@ package utn.k7.grupo13.alquileres.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
