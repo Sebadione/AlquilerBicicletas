@@ -9,5 +9,5 @@ import java.util.List;
 public interface AlquilerRepository extends JpaRepository<Alquiler, Long> {
 
     //metodo para buscar todos los alquileres con una estacion de retiro especifica
-    List<Alquiler> findByEstacionRetiroIdAndEstado(Long estacionRetiroId, int estado);
+    List<Alquiler> findAllByEstado(int estado);
 }

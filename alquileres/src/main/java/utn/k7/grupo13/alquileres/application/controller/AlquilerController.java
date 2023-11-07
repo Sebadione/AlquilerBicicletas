@@ -8,14 +8,14 @@ import utn.k7.grupo13.alquileres.application.request.PUTAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.request.PostAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.response.AlquilerResponse;
 import utn.k7.grupo13.alquileres.domain.Alquiler;
-import utn.k7.grupo13.alquileres.domain.Estacion;
 import utn.k7.grupo13.alquileres.service.AlquilerService;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-    @RequestMapping("/api/estacion/{id}/alquiler")
+    @RequestMapping("/api/alquiler")
 public class AlquilerController {
     private AlquilerService alquilerService;
 
@@ -24,8 +24,8 @@ public class AlquilerController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> alquilarBicicleta(@PathVariable Long id, @RequestBody PostAlquilerRequest request) {
-       Optional<Alquiler> alquiler = alquilerService.alquilarBicicleta(id,
+    public ResponseEntity<Object> alquilarBicicleta(@RequestBody PostAlquilerRequest request) {
+       Optional<Alquiler> alquiler = alquilerService.alquilarBicicleta(request.getIdEstacionRetiro(),
                request.getIdCliente());
          if(alquiler.isPresent()){
              return ResponseHandler.created(new AlquilerResponse(
@@ -44,11 +44,11 @@ public class AlquilerController {
              return ResponseHandler.badRequest("No se pudo crear el alquiler");
          }
     }
-    @PutMapping("/{idAlquiler}")
-    public ResponseEntity<Object> devolverBicicleta(@PathVariable Long id, @PathVariable Long idAlquiler, @RequestBody(required = false) PUTAlquilerRequest request) {
-        Optional<Alquiler> alquiler = alquilerService.devolverBicicleta(id, idAlquiler);
-        if(request == null){
-            request = new PUTAlquilerRequest(Moneda.ARS);
+    @PutMapping()
+    public ResponseEntity<Object> devolverBicicleta(@RequestBody(required = false) PUTAlquilerRequest request) {
+        Optional<Alquiler> alquiler = alquilerService.devolverBicicleta(request.getIdEstacionDevolucion(), request.getIdAlquiler());
+        if(request.getMoneda() == null){
+            request.setMoneda(Moneda.ARS);
         }
         double monto =  alquiler.get().getMonto() * request.getMoneda().getValor();
         monto = Math.round(monto * 100.0) / 100.0;
@@ -69,10 +69,10 @@ public class AlquilerController {
             return ResponseHandler.badRequest("No se pudo devolver la bicicleta");
         }
     }
-    /*
+
     @GetMapping()
-    public ResponseEntity<Object> getAlquileresEstacionEnCurso(@PathVariable Long id){
-        Optional<List<Alquiler>> alquileres = alquilerService.getAlquileresEstacionEnCurso(id);
+    public ResponseEntity<Object> getAlquileresEstacionEnCurso(){
+        Optional<List<Alquiler>> alquileres = alquilerService.getAlquileresEstacionEnCurso();
         if(alquileres.isPresent()){
             return ResponseHandler.success(alquileres.get());
     }else {
@@ -80,11 +80,7 @@ public class AlquilerController {
         }
 }
 
-       */
 
-    //probar servicio
-    @GetMapping
-    public Estacion getEstacion(@PathVariable Long id){
-        return alquilerService.invocarServicio(id);
-    }
+
+
 }

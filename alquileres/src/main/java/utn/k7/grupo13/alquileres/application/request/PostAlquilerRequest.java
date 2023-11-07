@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class PostAlquilerRequest {
+    private Long idEstacionRetiro;
     private String idCliente;
 }
