@@ -89,6 +89,26 @@ public class AlquilerServiceImpl implements AlquilerService {
         return null;
     }
 
+    @Override
+    public Optional<List<Alquiler>> getAlquilerConFiltro(String idCliente, Integer estado, Long estacionRetiro,
+                                                         Long estacionDevolucion) {
+        List<Alquiler> lista = alquilerRepository.findAll();
+
+        if (idCliente != null){
+            lista = lista.stream().filter(x -> x.getIdCliente().equals(idCliente)).toList();
+        }
+        if (estado != null){
+            lista = lista.stream().filter(x -> x.getEstado() == estado).toList();
+        }
+        if (estacionRetiro != null){
+            lista = lista.stream().filter(x -> x.getEstacionRetiro().equals(estacionDevolucion)).toList();
+        }
+        if (estacionDevolucion != null){
+            lista = lista.stream().filter(x -> x.getEstacionRetiro().equals(estacionRetiro)).toList();
+        }
+        Optional<List<Alquiler>> listaOp = Optional.of(lista);
+        return listaOp;
+    }
 
 
 }

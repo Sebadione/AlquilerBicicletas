@@ -7,6 +7,7 @@ import utn.k7.grupo13.alquileres.application.ResponseHandler;
 import utn.k7.grupo13.alquileres.application.request.Moneda;
 import utn.k7.grupo13.alquileres.application.request.PUTAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.request.PostAlquilerRequest;
+import utn.k7.grupo13.alquileres.application.response.AlquilerFiltroResponse;
 import utn.k7.grupo13.alquileres.application.response.AlquilerResponse;
 import utn.k7.grupo13.alquileres.domain.Alquiler;
 import utn.k7.grupo13.alquileres.domain.Estacion;
@@ -77,11 +78,17 @@ public class AlquilerController {
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getAlquileresEstacionEnCurso(){
+    public ResponseEntity<Object> getAlquileresEstacionEnCurso(@RequestBody(required = false) AlquilerFiltroResponse response ){
+        Optional<List<Alquiler>> alquileresFiltro = alquilerService.getAlquilerConFiltro(response.getIdCliente() ,response.getEstado(), response.getEstacionRetiro() ,response.getEstacionDevolucion());
+        if (!alquileresFiltro.isEmpty()){
+            System.out.println("ENTRO");
+            return ResponseHandler.success(alquileresFiltro.get());
+        }
+
         Optional<List<Alquiler>> alquileres = alquilerService.getAlquileresEstacionEnCurso();
         if(alquileres.isPresent()){
             return ResponseHandler.success(alquileres.get());
-    }else {
+        }else {
             return ResponseHandler.notFound("No se pudo obtener los alquileres");
         }
 }
