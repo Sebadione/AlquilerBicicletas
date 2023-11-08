@@ -62,38 +62,9 @@ public class AlquilerServiceImpl implements AlquilerService {
     }
 
     @Override
-    public Optional<List<Alquiler>> getAlquileresEstacionEnCurso() {
-        return Optional.of(alquilerRepository.findAllByEstado(EstadoAlquiler.INICIADO.getValor()));
-    }
-
-
-
-
-    @Override
-    public Estacion invocarServicio(Long id) {
-        try {
-            RestTemplate template = new RestTemplate();
-            ResponseEntity<Estacion> res = template.getForEntity(
-                    "http://localhost:3001/api/estacion/{id}", Estacion.class, id
-            );
-
-            if (res.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Respuesta exitosa: " + res.getBody());
-                return res.getBody();
-            } else {
-                System.out.println("Error en la petición");
-            }
-        } catch (HttpClientErrorException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public Optional<List<Alquiler>> getAlquilerConFiltro(String idCliente, Integer estado, Long estacionRetiro,
+    public List<Alquiler> getAlquilerConFiltro(String idCliente, Integer estado, Long estacionRetiro,
                                                          Long estacionDevolucion) {
         List<Alquiler> lista = alquilerRepository.findAll();
-
         if (idCliente != null){
             lista = lista.stream().filter(x -> x.getIdCliente().equals(idCliente)).toList();
         }
@@ -106,8 +77,7 @@ public class AlquilerServiceImpl implements AlquilerService {
         if (estacionDevolucion != null){
             lista = lista.stream().filter(x -> x.getEstacionRetiro().equals(estacionRetiro)).toList();
         }
-        Optional<List<Alquiler>> listaOp = Optional.of(lista);
-        return listaOp;
+        return lista;
     }
 
 
