@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface AlquilerService {
     public Optional<Alquiler> alquilarBicicleta(Long idEstacion, String idCliente);
     public Optional<Alquiler> devolverBicicleta(Long idEstacion, Long idAlquiler);
-    public Optional<List<Alquiler>> getAlquileresEstacionEnCurso();
-    public Estacion invocarServicio(Long id);
+    public List<Alquiler> getAlquilerConFiltro(String idCliente, Integer estado, Long estacionRetiro,
+                                                   Long estacionDevolucion);
+
 
 
 }
