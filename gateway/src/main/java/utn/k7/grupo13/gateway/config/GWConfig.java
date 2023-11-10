@@ -37,18 +37,18 @@ public class GWConfig {
         http.authorizeExchange(exchanges -> exchanges
 
 
-                        .pathMatchers(HttpMethod.POST,"/api/alquiler/")
-                        .hasRole("CLIENTE")
+                        .pathMatchers(HttpMethod.POST,"/api/alquiler/**")
+                        .hasRole("CLIENTES")
 
-                        .pathMatchers(HttpMethod.PUT,"/api/alquiler/")
-                        .hasRole("CLIENTE")
+                        .pathMatchers(HttpMethod.PUT,"/api/alquiler/**")
+                        .hasRole("CLIENTES")
 
 
-                        .pathMatchers(HttpMethod.GET,"/api/alquiler/")
-                        .hasRole("ADMINISTRADOR")
+                        .pathMatchers(HttpMethod.GET,"/api/alquiler/**")
+                        .hasRole("ADMINISTRADORES")
 
-                        .pathMatchers(HttpMethod.POST,"/api/estacion")
-                        .hasRole("ADMINISTRADOR")
+                        .pathMatchers(HttpMethod.POST,"/api/estacion/**")
+                        .hasRole("ADMINISTRADORES")
 
                         // Cualquier otra petición...
                         .anyExchange()
