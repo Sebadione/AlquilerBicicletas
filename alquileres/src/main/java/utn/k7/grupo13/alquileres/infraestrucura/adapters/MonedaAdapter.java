@@ -24,7 +24,6 @@ public class MonedaAdapter implements MonedaService {
                 MonedaResponse.class
         );
         if (res.getStatusCode().is2xxSuccessful()) {
-            System.out.println("La moneda es: " + Objects.requireNonNull(res.getBody()).getImporte());
             return Objects.requireNonNull(res.getBody()).getImporte();
         }
         return 0;

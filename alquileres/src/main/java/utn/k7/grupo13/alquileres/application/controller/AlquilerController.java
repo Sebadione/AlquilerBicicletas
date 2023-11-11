@@ -65,6 +65,10 @@ public class AlquilerController {
 
         monto = Math.round(monto * 100.0) / 100.0;
 
+        if (monto == 0){
+            return ResponseHandler.badRequest("No se pudo convertir la moneda");
+        }
+
         if (alquiler.isPresent()) {
             return ResponseHandler.success(new AlquilerResponse(
                     alquiler.get().getId(),
