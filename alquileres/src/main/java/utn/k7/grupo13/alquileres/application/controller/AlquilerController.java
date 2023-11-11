@@ -13,6 +13,7 @@ import utn.k7.grupo13.alquileres.domain.Alquiler;
 import utn.k7.grupo13.alquileres.domain.Estacion;
 import utn.k7.grupo13.alquileres.service.AlquilerService;
 import utn.k7.grupo13.alquileres.service.EstacionService;
+import utn.k7.grupo13.alquileres.service.MonedaService;
 
 
 import java.util.List;
@@ -22,11 +23,13 @@ import java.util.Optional;
     @RequestMapping("/api/alquiler")
 public class AlquilerController {
     private AlquilerService alquilerService;
+    private MonedaService monedaService;
 
 
 
-    public AlquilerController(AlquilerService alquilerService) {
+    public AlquilerController(AlquilerService alquilerService, MonedaService monedaService) {
         this.alquilerService = alquilerService;
+        this.monedaService = monedaService;
     }
 
     @PostMapping
@@ -57,8 +60,11 @@ public class AlquilerController {
         if (request.getMoneda() == null) {
             request.setMoneda(Moneda.ARS);
         }
-        double monto = alquiler.get().getMonto() * request.getMoneda().getValor();
+
+        double monto=monedaService.convertirMoneda(alquiler.get().getMonto(), request.getMoneda().getValor());
+
         monto = Math.round(monto * 100.0) / 100.0;
+
         if (alquiler.isPresent()) {
             return ResponseHandler.success(new AlquilerResponse(
                     alquiler.get().getId(),
