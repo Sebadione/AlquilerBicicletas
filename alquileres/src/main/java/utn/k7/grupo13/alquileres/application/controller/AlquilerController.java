@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utn.k7.grupo13.alquileres.application.ResponseHandler;
+import utn.k7.grupo13.alquileres.application.request.AlquilerFiltroRequest;
 import utn.k7.grupo13.alquileres.application.request.Moneda;
 import utn.k7.grupo13.alquileres.application.request.PUTAlquilerRequest;
 import utn.k7.grupo13.alquileres.application.request.PostAlquilerRequest;
-import utn.k7.grupo13.alquileres.application.response.AlquilerFiltroResponse;
 import utn.k7.grupo13.alquileres.application.response.AlquilerResponse;
 import utn.k7.grupo13.alquileres.domain.Alquiler;
 import utn.k7.grupo13.alquileres.domain.Estacion;
@@ -88,14 +88,26 @@ public class AlquilerController {
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getAlquileresEstacionEnCurso(@RequestBody(required = false) AlquilerFiltroResponse response ){
-        List<Alquiler> alquileresFiltro = alquilerService.getAlquilerConFiltro(response.getIdCliente() ,response.getEstado(), response.getEstacionRetiro() ,response.getEstacionDevolucion());
+    public ResponseEntity<Object> getAlquileresEstacionEnCurso(@RequestBody(required = false) AlquilerFiltroRequest response ){
+//        List<Alquiler> alquileresFiltro = alquilerService.getAlquilerConFiltro(response.getIdCliente() ,response.getEstado(), response.getEstacionRetiro() ,response.getEstacionDevolucion());
+//        if (!alquileresFiltro.isEmpty()){
+//            return ResponseHandler.success(alquileresFiltro);
+//        }else {
+//            return ResponseHandler.notFound("No existen alquileres que cumplan con los filtros ingresados.");
+//        }
+        List<AlquilerResponse> alquileresFiltro = alquilerService.getAlquilerConFiltro(response.getIdCliente(),
+                response.getEstado(),
+                response.getEstacionRetiro(),
+                response.getEstacionDevolucion())
+                .stream()
+                .map(AlquilerResponse::from)
+                .toList();
         if (!alquileresFiltro.isEmpty()){
-            System.out.println("ENTRO");
             return ResponseHandler.success(alquileresFiltro);
         }else {
             return ResponseHandler.notFound("No existen alquileres que cumplan con los filtros ingresados.");
         }
+
 
     }
 

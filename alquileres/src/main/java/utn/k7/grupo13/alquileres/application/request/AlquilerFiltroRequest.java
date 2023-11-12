@@ -1,14 +1,12 @@
-package utn.k7.grupo13.alquileres.application.response;
+package utn.k7.grupo13.alquileres.application.request;
 
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
-public class AlquilerFiltroResponse {
+public class AlquilerFiltroRequest {
     @Nullable
     private String idCliente;
     @Nullable
