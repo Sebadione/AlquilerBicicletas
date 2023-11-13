@@ -88,13 +88,7 @@ public class AlquilerController {
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getAlquileresEstacionEnCurso(@RequestBody(required = false) AlquilerFiltroRequest request ){
-//        List<Alquiler> alquileresFiltro = alquilerService.getAlquilerConFiltro(response.getIdCliente() ,response.getEstado(), response.getEstacionRetiro() ,response.getEstacionDevolucion());
-//        if (!alquileresFiltro.isEmpty()){
-//            return ResponseHandler.success(alquileresFiltro);
-//        }else {
-//            return ResponseHandler.notFound("No existen alquileres que cumplan con los filtros ingresados.");
-//        }
+    public ResponseEntity<Object> getAlquileresFiltro(@RequestBody(required = false) AlquilerFiltroRequest request ){
         List<AlquilerResponse> alquileresFiltro = alquilerService.getAlquilerConFiltro(request.getIdCliente(),
                 request.getEstado(),
                 request.getEstacionRetiro(),
