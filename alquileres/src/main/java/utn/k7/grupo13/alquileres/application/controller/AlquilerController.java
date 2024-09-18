@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-    @RequestMapping("/api/alquiler")
+@RequestMapping("/api/alquiler")
 public class AlquilerController {
+
     private AlquilerService alquilerService;
     private MonedaService monedaService;
 
